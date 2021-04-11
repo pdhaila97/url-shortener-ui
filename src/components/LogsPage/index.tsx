@@ -51,7 +51,7 @@ function LogsPage(props: any) {
     return <>
         {logInfo ? <Box px={2} pt={4}>
         <Box textAlign="center" py={4}><Typography variant="body1">The short URL has been used {logInfo.numOfHits} times.</Typography></Box>
-        <TableContainer component={Paper}>
+        {logInfo.hitsInfo && logInfo.hitsInfo.length > 0 && <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="customized table">
         <TableHead>
           <TableRow>
@@ -73,7 +73,7 @@ function LogsPage(props: any) {
           ))}
         </TableBody>
       </Table>
-    </TableContainer>
+    </TableContainer>}
     </Box> : <Loader />}
     </>
 }

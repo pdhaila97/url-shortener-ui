@@ -16,25 +16,27 @@ export const generateShortUrl = async (url: string, customization?: any) => {
             loggingEnabled: customization.loggingEnabled
         }
     }
-    const response = await http.post("/generate", {
+
+    return http.post("/generate", {
         url: url
     }, {
         params: queryparams
-    });
-
-    return response.data.shortUrl;
+    }).then(res => res.data.shortUrl).catch(err => {
+        throw err.response.data;
+    });;
 }
 
 export const getOriginalUrl = async (shortUrl: string) => {
     const http = httpService();
-    const response = await http.get(`/${shortUrl}`);
 
-    return response.data.url;
+    return http.get(`/${shortUrl}`).then(res => res.data.url).catch(err => {
+        throw err.response.data;
+    });
 }
 
 export const getLogsInformation = async (shortUrl: string) => {
     const http = httpService();
-    const response = await http.get(`/logs/${shortUrl}`);
-
-    return response.data;
+    return http.get(`/logs/${shortUrl}`).then(res => res.data).catch(err => {
+        throw err.response.data;
+    });;
 }
