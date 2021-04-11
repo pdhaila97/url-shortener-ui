@@ -1,4 +1,6 @@
-import { Box, Typography, List, ListItem, Link } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
+import Link from '@material-ui/core/Link';
 import React, { useEffect, useState } from 'react';
 import URLListTable from './URLListTable';
 

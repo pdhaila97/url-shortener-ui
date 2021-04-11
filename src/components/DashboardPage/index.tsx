@@ -1,4 +1,11 @@
-import { Box, Button, InputLabel, Link, List, ListItem, TextField, Typography } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import InputLabel from '@material-ui/core/InputLabel';
+import Link from '@material-ui/core/Link';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
 import React, { FormEvent, useState } from 'react';
 import { generateShortUrl } from '../../services/httpService';
 import Switch from '@material-ui/core/Switch';
@@ -68,6 +75,7 @@ function DashboardPage (props: any) {
                     const url = `${window.location.origin}/${value}`;
                     let urlObj = {
                         shortUrl: url,
+                        shortUrlHash: value,
                         url: fieldValues.url,
                         expiryTime: customizationObj ? customizationObj.expiryTime : null,
                         loggingEnabled: customizationObj ? customizationObj.loggingEnabled : null

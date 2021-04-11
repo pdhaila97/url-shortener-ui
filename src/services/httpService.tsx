@@ -31,3 +31,10 @@ export const getOriginalUrl = async (shortUrl: string) => {
 
     return response.data.url;
 }
+
+export const getLogsInformation = async (shortUrl: string) => {
+    const http = httpService();
+    const response = await http.get(`/logs/${shortUrl}`);
+
+    return response.data;
+}

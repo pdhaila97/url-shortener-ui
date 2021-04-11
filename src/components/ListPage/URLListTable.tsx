@@ -57,14 +57,14 @@ export default function URLListTable(props: any) {
               </StyledTableCell>
               <StyledTableCell><Link href={item.shortUrl}>{item.shortUrl}</Link></StyledTableCell>
               <StyledTableCell>{item.expiryTime ? new Date(item.expiryTime).toString() : "Not set"}</StyledTableCell>
-              <StyledTableCell>{item.loggingEnabled ? "Available" : "No Information"}</StyledTableCell>
+              <StyledTableCell>{item.loggingEnabled ? <RouterLink to={`/logs/${item.shortUrlHash}`}>Available</RouterLink>: "No Information"}</StyledTableCell>
               {/* <StyledTableCell align="right">{row.protein}</StyledTableCell> */}
             </StyledTableRow>
           ))}
         </TableBody>
       </Table>
     </TableContainer> : <Box textAlign="center"><Typography variant="h6">
-            No short URL has been created yet. Please <RouterLink to="/">visit here</RouterLink> to start creating some short URLs.
+            No short URL has been created yet.
       </Typography></Box>}</>}
     </>
   );
