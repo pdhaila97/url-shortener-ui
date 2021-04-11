@@ -2,22 +2,8 @@ import axios from 'axios';
 
 export const httpService = () => {
     return axios.create({
-        baseURL: 'http://localhost:4200'
+        baseURL: 'https://psd-shorturl-api.herokuapp.com'
     })
-}
-
-export const getAllNotes = (sort: any, showArchive: any) => {
-    // const http = httpService();
-    // const token = getUserToken();
-    // return http.get("/notes", {
-    //     headers: {
-    //         Authorization: `Bearer ${token}`
-    //     },
-    //     params: {
-    //         sortAsc: sort.asc,
-    //         showArchive
-    //     }
-    // })
 }
 
 export const generateShortUrl = async (url: string, customization?: any) => {
