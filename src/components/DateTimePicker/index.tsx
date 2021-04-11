@@ -6,7 +6,7 @@ import {
 } from '@material-ui/pickers';
 
 function DateTimePicker(props: any) {
-    const {value, onChange} = props;
+  const { value, onChange } = props;
 
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>

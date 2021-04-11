@@ -21,7 +21,7 @@ function ListPage(props: any) {
     return <>
         <Box px={2}>
             <Box textAlign="center" py={4}><Typography variant="h4">List of short URLs created</Typography></Box>
-            <Box pb={4}><URLListTable list={list}/></Box>
+            <Box pb={4}><URLListTable list={list} /></Box>
             <Box pb={4} textAlign="center"><Link onClick={goToHome}><Typography>Return to create more short URLs</Typography></Link></Box>
         </Box>
     </>

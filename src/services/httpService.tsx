@@ -10,7 +10,7 @@ export const generateShortUrl = async (url: string, customization?: any) => {
     const http = httpService();
 
     let queryparams;
-    if(customization) {
+    if (customization) {
         queryparams = {
             expiryTime: customization.expiryTime,
             loggingEnabled: customization.loggingEnabled

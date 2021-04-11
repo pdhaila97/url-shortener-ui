@@ -3,8 +3,8 @@ import Box from '@material-ui/core/Box';
 import ReactDOM from 'react-dom';
 import { Switch, Router, Route } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
-import { createMuiTheme }  from '@material-ui/core/styles'
-import { createBrowserHistory as history} from 'history';
+import { createMuiTheme } from '@material-ui/core/styles'
+import { createBrowserHistory as history } from 'history';
 import DashboardPage from './components/DashboardPage';
 import RedirectionPage from './components/RedirectionPage';
 import ListPage from './components/ListPage';
@@ -13,7 +13,7 @@ import LogsPage from './components/LogsPage';
 
 const theme = createMuiTheme({});
 
-function App () {
+function App() {
     return (
         <ThemeProvider theme={theme}>
             <Box height="inherit" width="inherit">

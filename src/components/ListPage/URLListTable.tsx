@@ -36,7 +36,7 @@ const useStyles = makeStyles({
 
 export default function URLListTable(props: any) {
   const classes = useStyles();
-  const {list: rows} = props;
+  const { list: rows } = props;
   return (<>
     {rows && <>{Array.isArray(rows) && rows.length > 0 ? <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="customized table">
@@ -53,19 +53,19 @@ export default function URLListTable(props: any) {
           {rows.map((item: any) => (
             <StyledTableRow key={item.shortUrl}>
               <StyledTableCell component="th" scope="row">
-              <Link href={item.url}>{item.url}</Link>
+                <Link href={item.url}>{item.url}</Link>
               </StyledTableCell>
               <StyledTableCell><Link href={item.shortUrl}>{item.shortUrl}</Link></StyledTableCell>
               <StyledTableCell>{item.expiryTime ? new Date(item.expiryTime).toString() : "Not set"}</StyledTableCell>
-              <StyledTableCell>{item.loggingEnabled ? <RouterLink to={`/logs/${item.shortUrlHash}`}>Available</RouterLink>: "No Information"}</StyledTableCell>
+              <StyledTableCell>{item.loggingEnabled ? <RouterLink to={`/logs/${item.shortUrlHash}`}>Available</RouterLink> : "No Information"}</StyledTableCell>
               {/* <StyledTableCell align="right">{row.protein}</StyledTableCell> */}
             </StyledTableRow>
           ))}
         </TableBody>
       </Table>
     </TableContainer> : <Box textAlign="center"><Typography variant="h6">
-            No short URL has been created yet.
+      No short URL has been created yet.
       </Typography></Box>}</>}
-    </>
+  </>
   );
 }

@@ -22,7 +22,7 @@ const StyledBackdrop = styled(Backdrop)`
 z-index: 10000;
 `;
 
-function DashboardPage (props: any) {
+function DashboardPage(props: any) {
 
     const [fieldValues, setFieldValues] = useState({
         url: "",
@@ -64,7 +64,7 @@ function DashboardPage (props: any) {
         e.preventDefault();
         let customizationObj: any;
 
-        if(fieldValues.customizeUrl) {
+        if (fieldValues.customizeUrl) {
             customizationObj = {
                 expiryTime: fieldValues.customization.expiryDate.enabled ? fieldValues.customization.expiryDate.value.getTime() : null,
                 loggingEnabled: fieldValues.customization.logging
@@ -73,10 +73,10 @@ function DashboardPage (props: any) {
         }
 
         let longUrl = fieldValues.url.trim();
-        if(longUrl) {
+        if (longUrl) {
             try {
                 new URL(longUrl); // will throw an error for invalid url
-                setErrors({url : {}});
+                setErrors({ url: {} });
                 setShowLoader(true);
                 generateShortUrl(longUrl, customizationObj).then((value) => {
                     const urlsLS = JSON.parse(localStorage.getItem("urlsLS") || "[]");
@@ -95,16 +95,20 @@ function DashboardPage (props: any) {
                     setShowLoader(false);
                 });
             } catch (err) {
-                setErrors({url: {
-                    message: "Invalid URL. Please enter the complete URL",
-                    status: true
-                }});
+                setErrors({
+                    url: {
+                        message: "Invalid URL. Please enter the complete URL",
+                        status: true
+                    }
+                });
             }
         } else {
-            setErrors({url: {
-                message: "Please enter a URL",
-                status: true
-            }})
+            setErrors({
+                url: {
+                    message: "Please enter a URL",
+                    status: true
+                }
+            })
         }
     }
 
@@ -141,20 +145,20 @@ function DashboardPage (props: any) {
 
     return (
         <>
-        <StyledBackdrop open={showLoader}>
-            <CircularProgress color="secondary" />
-        </StyledBackdrop>
-        <Box p={2} display="flex" flexDirection="column" alignItems="center">
-            <Box pt={6}><Typography variant="h4">Enter a url</Typography></Box>
-            <StyledForm onSubmit={onSubmit}>
-                <Box mt={3} display="flex" flexDirection="column">
-                    <Box mb={4}><TextField variant="outlined" error={errors.url.status} helperText={errors.url.message} fullWidth name="url" value={fieldValues.url} onChange={(e) => updateFieldValues(e.target.name, e.target.value)} /></Box>
-                    {/* customize url */}
-                    <Box display="flex" justifyContent="center" alignItems="center">
-                        <InputLabel>Customize your URL</InputLabel>
-                        <Switch checked={fieldValues.customizeUrl} onChange={toggleCustomization} />
-                    </Box>
-                    {fieldValues.customizeUrl && <Box>
+            <StyledBackdrop open={showLoader}>
+                <CircularProgress color="secondary" />
+            </StyledBackdrop>
+            <Box p={2} display="flex" flexDirection="column" alignItems="center">
+                <Box pt={6}><Typography variant="h4">Enter a url</Typography></Box>
+                <StyledForm onSubmit={onSubmit}>
+                    <Box mt={3} display="flex" flexDirection="column">
+                        <Box mb={4}><TextField variant="outlined" error={errors.url.status} helperText={errors.url.message} fullWidth name="url" value={fieldValues.url} onChange={(e) => updateFieldValues(e.target.name, e.target.value)} /></Box>
+                        {/* customize url */}
+                        <Box display="flex" justifyContent="center" alignItems="center">
+                            <InputLabel>Customize your URL</InputLabel>
+                            <Switch checked={fieldValues.customizeUrl} onChange={toggleCustomization} />
+                        </Box>
+                        {fieldValues.customizeUrl && <Box>
                             <List>
                                 <ListItem>
                                     <InputLabel>Toggle Expiration Time: </InputLabel>
@@ -170,21 +174,21 @@ function DashboardPage (props: any) {
                                 </ListItem>
                             </List>
                         </Box>}
-                    <Box pt={6}><Button fullWidth color="primary" variant="contained" type="submit"><Typography variant="body1">Generate Short URL</Typography></Button></Box>
-                    <Box pt={3} textAlign="center"><Link color="primary" onClick={goToListPage}><Typography variant="body1">Or view the list of URLs that you have generated</Typography></Link></Box>
+                        <Box pt={6}><Button fullWidth color="primary" variant="contained" type="submit"><Typography variant="body1">Generate Short URL</Typography></Button></Box>
+                        <Box pt={3} textAlign="center"><Link color="primary" onClick={goToListPage}><Typography variant="body1">Or view the list of URLs that you have generated</Typography></Link></Box>
+                    </Box>
+                </StyledForm>
+                {url && <><Box display="flex" justifyContent="center" alignItems="center" mt={4}><Typography variant="h6">This is your short URL - &nbsp;</Typography>
+                    <Link variant="h6" href={url.shortUrl}>{url.shortUrl}</Link>
                 </Box>
-            </StyledForm>
-            {url && <><Box display="flex" justifyContent="center" alignItems="center" mt={4}><Typography variant="h6">This is your short URL - &nbsp;</Typography>
-            <Link variant="h6" href={url.shortUrl}>{url.shortUrl}</Link>
+                    {url.expiryTime && <Box pt={2}>
+                        <Typography>The link will get expired by {new Date(url.expiryTime).toString()}</Typography>
+                    </Box>}
+                    {url.loggingEnabled && <Box pt={2}>
+                        <Typography>You have set the logging enabled for this short URL.</Typography>
+                    </Box>}
+                </>}
             </Box>
-            {url.expiryTime && <Box pt={2}>
-                <Typography>The link will get expired by {new Date(url.expiryTime).toString()}</Typography>
-            </Box>}
-            {url.loggingEnabled && <Box pt={2}>
-                <Typography>You have set the logging enabled for this short URL.</Typography>
-            </Box>}
-            </>}
-        </Box>
         </>
     )
 }
