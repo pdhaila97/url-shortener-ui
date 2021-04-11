@@ -13,7 +13,8 @@ export const generateShortUrl = async (url: string, customization?: any) => {
     if (customization) {
         queryparams = {
             expiryTime: customization.expiryTime,
-            loggingEnabled: customization.loggingEnabled
+            loggingEnabled: customization.loggingEnabled,
+            customShortUrl: customization.customShortUrl
         }
     }
 

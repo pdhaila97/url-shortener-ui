@@ -30,14 +30,19 @@ function DashboardPage(props: any) {
         customization: {
             expiryDate: {
                 enabled: false,
-                value: new Date()
+                value: new Date(),
             },
-            logging: false
+            logging: false,
+            customShortUrl: ""
         }
     });
 
     const [errors, setErrors]: any = useState({
         url: {
+            status: false,
+            message: ""
+        },
+        customShortUrl: {
             status: false,
             message: ""
         }
@@ -67,8 +72,8 @@ function DashboardPage(props: any) {
         if (fieldValues.customizeUrl) {
             customizationObj = {
                 expiryTime: fieldValues.customization.expiryDate.enabled ? fieldValues.customization.expiryDate.value.getTime() : null,
-                loggingEnabled: fieldValues.customization.logging
-                // etc
+                loggingEnabled: fieldValues.customization.logging,
+                customShortUrl: fieldValues.customization.customShortUrl || null
             }
         }
 
@@ -76,7 +81,7 @@ function DashboardPage(props: any) {
         if (longUrl) {
             try {
                 new URL(longUrl); // will throw an error for invalid url
-                setErrors({ url: {} });
+                setErrors({});
                 setShowLoader(true);
                 generateShortUrl(longUrl, customizationObj).then((value) => {
                     const urlsLS = JSON.parse(localStorage.getItem("urlsLS") || "[]");
@@ -88,14 +93,23 @@ function DashboardPage(props: any) {
                         expiryTime: customizationObj ? customizationObj.expiryTime : null,
                         loggingEnabled: customizationObj ? customizationObj.loggingEnabled : null
                     };
-                    urlsLS.push(urlObj);
+                    urlsLS.unshift(urlObj);
                     localStorage.setItem("urlsLS", JSON.stringify(urlsLS));
                     setUrl(urlObj);
+                }).catch(err => {
+                    setErrors({
+                        ...errors,
+                        customShortUrl: {
+                            message: "A short URL with the same value already exists. Please try some other value",
+                            status: true
+                        }
+                    })
                 }).finally(() => {
                     setShowLoader(false);
                 });
             } catch (err) {
                 setErrors({
+                    ...errors,
                     url: {
                         message: "Invalid URL. Please enter the complete URL",
                         status: true
@@ -104,6 +118,7 @@ function DashboardPage(props: any) {
             }
         } else {
             setErrors({
+                ...errors,
                 url: {
                     message: "Please enter a URL",
                     status: true
@@ -119,6 +134,13 @@ function DashboardPage(props: any) {
                 ...fieldValues.customization.expiryDate,
                 value: value
             }
+        })
+    }
+
+    const updateCustomShortUrl = (value: any) => {
+        updateFieldValues("customization", {
+            ...fieldValues.customization,
+            customShortUrl: value
         })
     }
 
@@ -152,7 +174,7 @@ function DashboardPage(props: any) {
                 <Box pt={6}><Typography variant="h4">Enter a url</Typography></Box>
                 <StyledForm onSubmit={onSubmit}>
                     <Box mt={3} display="flex" flexDirection="column">
-                        <Box mb={4}><TextField variant="outlined" error={errors.url.status} helperText={errors.url.message} fullWidth name="url" value={fieldValues.url} onChange={(e) => updateFieldValues(e.target.name, e.target.value)} /></Box>
+                        <Box mb={4}><TextField variant="outlined" error={errors.url?.status} helperText={errors.url?.message} fullWidth name="url" value={fieldValues.url} onChange={(e) => updateFieldValues(e.target.name, e.target.value)} /></Box>
                         {/* customize url */}
                         <Box display="flex" justifyContent="center" alignItems="center">
                             <InputLabel>Customize your URL</InputLabel>
@@ -171,6 +193,11 @@ function DashboardPage(props: any) {
                                 <ListItem>
                                     <InputLabel>Toggle Logging: </InputLabel>
                                     <Switch checked={fieldValues.customization.logging} onChange={toggleLogging}></Switch>
+                                </ListItem>
+                                <ListItem>
+                                    <Box pt={1} width={1}><InputLabel>Custom short URL: </InputLabel>
+                                    <TextField variant="standard" error={errors.customShortUrl?.status} helperText={errors.customShortUrl?.message} fullWidth name="customShortUrl" value={fieldValues.customization.customShortUrl} onChange={(e) => updateCustomShortUrl(e.target.value)} />
+                                    </Box>
                                 </ListItem>
                             </List>
                         </Box>}
