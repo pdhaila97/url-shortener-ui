@@ -11,10 +11,15 @@ import { generateShortUrl } from '../../services/httpService';
 import Switch from '@material-ui/core/Switch';
 import DateTimePicker from '../DateTimePicker';
 import styled from 'styled-components';
+import { Backdrop, CircularProgress } from '@material-ui/core';
 
 const StyledForm = styled.form`
 width: 100%;
 max-width: 550px;
+`;
+
+const StyledBackdrop = styled(Backdrop)`
+z-index: 10000;
 `;
 
 function DashboardPage (props: any) {
@@ -39,6 +44,8 @@ function DashboardPage (props: any) {
     });
 
     const [url, setUrl]: any = useState(null);
+
+    const [showLoader, setShowLoader] = useState(false);
 
     const updateFieldValues = (fieldName: string, value: any) => {
         setFieldValues((fieldValues) => {
@@ -69,7 +76,8 @@ function DashboardPage (props: any) {
         if(longUrl) {
             try {
                 new URL(longUrl); // will throw an error for invalid url
-                setErrors({url : {}})
+                setErrors({url : {}});
+                setShowLoader(true);
                 generateShortUrl(longUrl, customizationObj).then((value) => {
                     const urlsLS = JSON.parse(localStorage.getItem("urlsLS") || "[]");
                     const url = `${window.location.origin}/${value}`;
@@ -83,12 +91,14 @@ function DashboardPage (props: any) {
                     urlsLS.push(urlObj);
                     localStorage.setItem("urlsLS", JSON.stringify(urlsLS));
                     setUrl(urlObj);
+                }).finally(() => {
+                    setShowLoader(false);
                 });
             } catch (err) {
                 setErrors({url: {
                     message: "Invalid URL. Please enter the complete URL",
                     status: true
-                }})
+                }});
             }
         } else {
             setErrors({url: {
@@ -130,6 +140,10 @@ function DashboardPage (props: any) {
     }
 
     return (
+        <>
+        <StyledBackdrop open={showLoader}>
+            <CircularProgress color="secondary" />
+        </StyledBackdrop>
         <Box p={2} display="flex" flexDirection="column" alignItems="center">
             <Box pt={6}><Typography variant="h4">Enter a url</Typography></Box>
             <StyledForm onSubmit={onSubmit}>
@@ -171,6 +185,7 @@ function DashboardPage (props: any) {
             </Box>}
             </>}
         </Box>
+        </>
     )
 }
 
